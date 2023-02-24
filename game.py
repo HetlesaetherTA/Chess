@@ -137,7 +137,7 @@ class Board:
         for y in reversed(range(9)):
             if y != 0:
                 print(str(y) + " ", end="")
-            for x in reversed(range(9)):
+            for x in range(9):
                 fileFree = True
                 for i in Board.white:
                     if Board.white[i]["loc"] == (x, y - 1):
@@ -148,17 +148,17 @@ class Board:
                         print(colored(Board.black[i]["piece"][0] + " ", "red"), end="")
                         fileFree = False
                         break
-                if y == 0 and x == 8:
+                if y == 0 and x == 0:
                     print("  ", end="")
                     fileFree = False
-                if y == 0 and x != 0:
-                    print(chr(73 - x) + " ", end="")
+                if y == 0 and x != 8:
+                    print(chr(65 + x) + " ", end="")
                     fileFree = False
                 if x == 8:
                     fileFree = False
                 if fileFree == True and x > -1 and y > 0:
                     print("* ", end="")
-                if x == 0:
+                if x == 7:
                     print("\n", end="")
                 # Current naive worse case is 64 * 32 iterations (2048) per frame. 
                 # Ideas for improvement:
