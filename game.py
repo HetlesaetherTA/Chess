@@ -1,3 +1,4 @@
+from termcolor import colored
 # "loc": (x, y)
 class Board:
     white = {
@@ -131,25 +132,37 @@ class Board:
                 "loc": (7,6),
                 "moved": False,
                 "piece": "P"}}
+    #TODO clean this shit up...
     def render():
-        for y in range(9):
-            if y != 8:
-                print(str(8 - y) + " |", end="")
-            for x in range(9):
+        for y in reversed(range(9)):
+            if y != 0:
+                print(str(y) + " ", end="")
+            for x in reversed(range(9)):
+                fileFree = True
                 for i in Board.white:
-                    if Board.white[i]["loc"] == (x, y):
-                        print(Board.white[i]["piece"][0] + " ", end="")
-                    if Board.black[i]["loc"] == (x, y):
-                        print(Board.black[i]["piece"][0] + " ", end="")
-                if y == 8 and x == 0:
+                    if Board.white[i]["loc"] == (x, y - 1):
+                        print(colored(Board.white[i]["piece"][0] + " ", "blue"), end="")
+                        fileFree = False
+                        break
+                    if Board.black[i]["loc"] == (x, y - 1 ):
+                        print(colored(Board.black[i]["piece"][0] + " ", "red"), end="")
+                        fileFree = False
+                        break
+                if y == 0 and x == 8:
                     print("  ", end="")
-                if y == 8 and x != 8:
-                    print(chr(65 + x) + " ", end="")
+                    fileFree = False
+                if y == 0 and x != 0:
+                    print(chr(73 - x) + " ", end="")
+                    fileFree = False
                 if x == 8:
+                    fileFree = False
+                if fileFree == True and x > -1 and y > 0:
+                    print("* ", end="")
+                if x == 0:
                     print("\n", end="")
-                # You could add logic to check white first if y > 4 and black first if y < 4.
-                # But there is only 1792 (32 * 56) iterations worse case so I can't be bothered. 
-                # Another alternative that's even faster is to put all locations in an array 
-                # then sort, print, and pop it. That gives you O(nlogn+56) (32 * log(32) + 56 = 216).
-                # Or I could've formated the dictonary like this: board[loc] = piece to make it O(n). 
-Board.render()
+                # Current naive worse case is 64 * 32 iterations (2048) per frame. 
+                # Ideas for improvement:
+
+                # Check white first if y > 4 & black first if y < 4 (optimize probability).
+                # Store board in sorted array and iterate though that array insted, gives: (O(n log(n) + 64)) (224) per frame.
+                # Store dictonary as loc: piece. Gives O(n) (64) per frame. But can cause complications in other parts of the program.
