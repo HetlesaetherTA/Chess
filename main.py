@@ -14,11 +14,5 @@ while True:
     else: 
         mfrom = move[0]
         mto = move[1:3]
-    print(mfrom, mto)
-    print(move_to)
-    for i in Board.white:
-        print(Board.white[i]["loc"])
-        if Board.white[i]["loc"] == move_from:
-            Board.white[i]["loc"] = move_to
     Board.render() 
 
